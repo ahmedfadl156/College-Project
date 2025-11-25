@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../CSS/style.css">
+    <title>Register Page</title>
+</head>
+
+<body>
+    <div class="register-container">
+        <!-- الصورة -->
+        <div class="image-container">
+            <img src="../Images/register-image.png" alt="Register">
+        </div>
+        <!-- الفورم الخاص ببيانات تسجيل الدخول -->
+        <div class="form-container">
+            <h2>Join The Community</h2>
+            <p>Create your account to start tracking attendance</p>
+            <!-- الفورم -->
+            <form class="form">
+                <!-- Name Input -->
+                <div>
+                    <input type="text" id="name" name="name" placeholder="Full Name" required>
+                    <span><i class="fa-solid fa-user"></i></span>
+                </div>
+                <!-- Student ID Input -->
+                <div>
+                    <input type="text" id="student-id" name="student-id" placeholder="Student ID" required>
+                    <span><i class="fa-solid fa-user"></i></span>
+                </div>
+                <!-- University Email Input -->
+                <div>
+                    <input type="email" id="university-email" name="university-email" placeholder="University Email" required>
+                    <span><i class="fa-solid fa-envelope"></i></span>
+                </div>
+                <!-- Password Input -->
+                <div>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <span><i class="fa-solid fa-lock"></i></span>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" id="register-button">Register</button>
+                <p>
+                    <span><i class="fa-solid fa-lock"></i></span>
+                    Your data will be saved locally on your device
+                </p>
+            </form>
+        </div>
+    </div>
+    <script src="../JS/main.js"></script>
+</body>
+</html>
