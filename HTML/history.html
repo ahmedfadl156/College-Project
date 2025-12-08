@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+
+<body style="display: flex; justify-content: center; align-items: center;">
+        <!-- الهيدر -->
+        <header>
+            <!-- الناف بار -->
+            <nav>
+                <!-- اللوجو -->
+                <div class="logo">
+                    <span><i class="fa-solid fa-check"></i></span>
+                    <h1>
+                        Attendly
+                    </h1>
+                </div>
+                <!-- اللينكات الرئيسية -->
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="checkin.html">Check In</a></li>
+                    <li><a href="history.html">History</a></li>
+                    <li><a href="claender.html">Claender</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <!-- زر تسجيل الدخول -->
+                <div class="action-buttons">
+                    <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+                </div>
+                <!-- المنيو -->
+                <label class="hamburger">
+                    <input type="checkbox" id="hamburger-toggle">
+                    <svg viewBox="0 0 32 32">
+                        <path class="line line-top-bottom"
+                            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
+                        </path>
+                        <path class="line" d="M7 16 27 16"></path>
+                    </svg>
+                </label>
+            </nav>
+            <!-- القائمة المتنقلة -->
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="checkin.html">Check In</a></li>
+                    <li><a href="history.html">History</a></li>
+                    <li><a href="claender.html">Claender</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="mobile-action-buttons">
+                    <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+                </div>
+            </div>
+        </header>
+    <div class="attendance-wrapper">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="header-content">
+                <h1>Your Attendance Log</h1>
+                <span class="badge">Fall 2025</span>
+            </div>
+            <p>A detailed history of your class check-ins. stay on track!</p>
+        </div>
+
+        <!-- Attendance Container -->
+        <div class="attendance-container">
+            <!-- Table Header -->
+            <div class="attendance-header">
+                <span>Class</span>
+                <span>Date</span>
+                <span>Status</span>
+                <span class="details-col">Details</span>
+            </div>
+
+            <!-- Attendance Records -->
+            <div class="attendance-records">
+                <div class="attendance-record">
+                    <div class="class-info">
+                        <p class="class-name">Intro to Programming</p>
+                        <p class="class-code">CS101</p>
+                    </div>
+                    <div class="date-info">
+                        <p>October 26, 2023</p>
+                    </div>
+                    <div class="status-info">
+                        <div class="status-badge status-present">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Present
+                        </div>
+                    </div>
+                    <div class="details-info">
+                        <button class="details-btn">
+                            <span class="material-symbols-outlined">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../JS/main.js"></script>
+</html>

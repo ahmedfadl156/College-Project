@@ -26,7 +26,6 @@
             <!-- اللينكات الرئيسية -->
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="register.html">Register</a></li>
                 <li><a href="checkin.html">Check In</a></li>
                 <li><a href="history.html">History</a></li>
                 <li><a href="claender.html">Claender</a></li>
@@ -34,10 +33,119 @@
             </ul>
             <!-- زر تسجيل الدخول -->
             <div class="action-buttons">
-                <button class="register-btn">Register</button>
+                <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
             </div>
+            <!-- المنيو -->
+            <label class="hamburger">
+                <input type="checkbox" id="hamburger-toggle">
+                <svg viewBox="0 0 32 32">
+                    <path class="line line-top-bottom"
+                        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
+                    </path>
+                    <path class="line" d="M7 16 27 16"></path>
+                </svg>
+            </label>
         </nav>
+        <!-- القائمة المتنقلة -->
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="checkin.html">Check In</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="claender.html">Claender</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="mobile-action-buttons">
+                <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+            </div>
+        </div>
     </header>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">
+                            Never Miss a Beat. <br/><span class="text-primary">Or a Class.</span>
+                        </h1>
+                        <p class="hero-description">
+                            Streamline your university life. Track attendance, manage your schedule, and focus on what matters most—your education.
+                        </p>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="register.html" class="btn-primary">
+                            <span>Get Started Free</span>
+                        </a>
+                        <a href="#" class="btn-secondary">
+                            <span>How it Works</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="../Images/home-image.png" alt="A modern, flat-style vector graphic related to students, technology, and university life.">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <div class="features-header">
+                    <h2 class="features-title">
+                        Everything You Need to Succeed
+                    </h2>
+                    <p class="features-description">
+                        Our system is designed to be simple, efficient, and integrated into your student life.
+                    </p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Instant Check-In</h3>
+                            <p class="feature-text">Quickly check in to your classes using QR codes or NFC technology right from your phone.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">View Your History</h3>
+                            <p class="feature-text">Easily access and review your complete attendance records anytime, anywhere.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Never Miss a Class</h3>
+                            <p class="feature-text">
+                                Stay ahead with calendar integration and timely reminders for your upcoming lectures and tutorials.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+            <p class="footer-copyright">© 2025 Attendly. All Rights Reserved. Developed By Ahmed Fadl</p>
+        </div>
+    </footer>
     <script src="../JS/main.js"></script>
 </body>
 
