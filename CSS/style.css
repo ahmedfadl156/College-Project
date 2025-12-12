@@ -1437,29 +1437,29 @@ header nav .action-buttons button:hover {
 
 /* Mobile Menu */
 .mobile-menu {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 998;
     padding: 100px 20px 20px;
     transform: translateY(-100%);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    border-radius: 0 0 20px 20px;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
     max-height: 100vh;
     overflow-y: auto;
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 }
 
 .mobile-menu.active {
-    display: block !important;
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .mobile-menu ul {
@@ -1564,13 +1564,598 @@ header nav .action-buttons button:hover {
     .hamburger {
         display: block;
     }
+}
 
-    /* إظهار القائمة المتنقلة */
-    .mobile-menu {
-        display: block;
+/* ============================================ */
+/* Calendar Page Styling */
+/* ============================================ */
+
+.calendar-main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.calendar-wrapper {
+    width: 100%;
+    max-width: 900px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+}
+
+.calendar-page-title {
+    color: #1e293b;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 0 30px 0;
+    text-align: center;
+}
+
+/* No Student Message */
+.no-student-message {
+    text-align: center;
+    padding: 30px;
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    color: #92400e;
+}
+
+.no-student-message p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.no-student-message a {
+    color: #135bec;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.no-student-message a:hover {
+    text-decoration: underline;
+}
+
+/* Calendar Container */
+.calendar-container {
+    width: 100%;
+}
+
+/* Calendar Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+}
+
+.calendar-month-year {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.month-nav-btn {
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #475569;
+}
+
+.month-nav-btn:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #1e293b;
+}
+
+.month-nav-btn:active {
+    transform: scale(0.95);
+}
+
+.month-nav-btn i {
+    font-size: 14px;
+}
+
+/* Weekday Headers */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #64748b;
+    padding: 8px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+/* Day Cell */
+.day-cell {
+    aspect-ratio: 1;
+    min-height: 80px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.day-cell:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+}
+
+.day-cell.empty {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+}
+
+.day-cell.empty:hover {
+    background-color: transparent;
+}
+
+/* Day Number */
+.day-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.day-cell.empty .day-number {
+    color: transparent;
+}
+
+/* Present Day Styling */
+.day-cell.present-day {
+    background-color: #dcfce7;
+    border-color: #86efac;
+}
+
+.day-cell.present-day:hover {
+    background-color: #bbf7d0;
+    border-color: #4ade80;
+}
+
+.day-cell.present-day .day-number {
+    color: #15803d;
+    font-weight: 700;
+}
+
+/* Day Info (for class codes/topics) */
+.day-info {
+    font-size: 10px;
+    color: #15803d;
+    font-weight: 500;
+    margin-top: auto;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Legend */
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-box {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+.legend-box.present-day {
+    background-color: #dcfce7;
+    border-color: #86efac;
+}
+
+.legend-label {
+    font-size: 14px;
+    color: #475569;
+    font-weight: 500;
+}
+
+/* Responsive Design for Calendar */
+@media (max-width: 768px) {
+    .calendar-wrapper {
+        padding: 30px 20px;
+        border-radius: 12px;
+    }
+
+    .calendar-page-title {
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+
+    .calendar-header {
+        margin-bottom: 20px;
+    }
+
+    .calendar-month-year {
+        font-size: 20px;
+    }
+
+    .month-nav-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .weekday {
+        font-size: 12px;
+        padding: 6px 2px;
+    }
+
+    .day-cell {
+        min-height: 60px;
+        padding: 6px;
+    }
+
+    .day-number {
+        font-size: 14px;
+    }
+
+    .day-info {
+        font-size: 9px;
+    }
+
+    .calendar-legend {
+        gap: 24px;
+        padding-top: 20px;
+    }
+
+    .legend-box {
+        width: 20px;
+        height: 20px;
+    }
+
+    .legend-label {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-main-container {
+        padding: 20px 10px;
+    }
+
+    .calendar-wrapper {
+        padding: 20px 15px;
+    }
+
+    .calendar-page-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header {
+        padding: 0 5px;
+        margin-bottom: 16px;
+    }
+
+    .calendar-month-year {
+        font-size: 18px;
+    }
+
+    .month-nav-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .month-nav-btn i {
+        font-size: 12px;
+    }
+
+    .calendar-weekdays {
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+
+    .weekday {
+        font-size: 11px;
+        padding: 4px 1px;
+    }
+
+    .calendar-grid {
+        gap: 4px;
+        margin-bottom: 20px;
+    }
+
+    .day-cell {
+        min-height: 50px;
+        padding: 4px;
+        border-radius: 6px;
+    }
+
+    .day-number {
+        font-size: 12px;
+    }
+
+    .day-info {
+        font-size: 8px;
+    }
+
+    .calendar-legend {
+        gap: 16px;
+        padding-top: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* Contact Page Style */
+.main-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 80px auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.main-section .header h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.main-section .header p {
+    max-width: 700px;
+    margin: 0 auto 50px;
+    font-size: 18px;
+}
+
+.contact-section {
+    display: flex;
+    align-items: stretch;
+    background-color: white;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    background-color: #F3F7FE;
+    color: black;
+    padding: 50px 40px;
+    width: 40%;
+    position: relative;
+}
+
+
+.contact-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-info > p {
+    font-size: 16px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-info ul {
+    list-style: none;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-info ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.contact-info ul li:hover {
+    transform: translateX(5px);
+}
+
+.contact-info ul li i {
+    font-size: 20px;
+    margin-right: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-form {
+    padding: 50px 40px;
+    width: 60%;
+    background-color: #ffffff;
+}
+
+.contact-form h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: left;
+}
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.contact-form button {
+    padding: 15px 40px;
+    background: #135BEC;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.contact-form button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 968px) {
+    .contact-section {
+        flex-direction: column;
     }
     
-    .mobile-menu.active {
-        display: block !important;
+    .contact-info,
+    .contact-form {
+        width: 100%;
+    }
+    
+    .contact-info {
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .main-section .header h1 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-section {
+        margin: 40px auto;
+    }
+    
+    .main-section .header h1 {
+        font-size: 32px;
+    }
+    
+    .main-section .header p {
+        font-size: 16px;
+    }
+    
+    .contact-info,
+    .contact-form {
+        padding: 30px 25px;
+    }
+    
+    .contact-info h1,
+    .contact-form h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .main-section .header h1 {
+        font-size: 28px;
+    }
+    
+    .contact-info ul li {
+        font-size: 14px;
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .contact-form button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
     }
 }

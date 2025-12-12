@@ -475,59 +475,431 @@ if (checkInForm) {
 // التحقق من وجود مستخدم مسجل دخول عند تحميل الصفحة
 // ============================================
 existingUserLogin();
-renderAttendanceRecords();
+
+// بنشغل renderAttendanceRecords فقط لو كنا في صفحة History
+// علشان نتجنب أي أخطاء في الصفحات التانية
+const currentPage = window.location.pathname || window.location.href;
+if (currentPage.includes('history.html')) {
+    renderAttendanceRecords();
+}
+
+// Initialize hamburger menu on all pages
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHamburgerMenu);
+} else {
+    initHamburgerMenu();
+}
 
 // ============================================
 // Hamburger Menu Control
 // ============================================
-const hamburgerToggle = document.getElementById('hamburger-toggle');
-const mobileMenu = document.getElementById('mobile-menu');
+function initHamburgerMenu() {
+    const hamburgerToggle = document.getElementById('hamburger-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerLabel = document.querySelector('.hamburger');
 
-if (hamburgerToggle && mobileMenu) {
-    hamburgerToggle.addEventListener('change', function() {
-        if (this.checked) {
-            mobileMenu.classList.add('active');
-            mobileMenu.style.display = 'block';
-            mobileMenu.style.opacity = '1';
-            mobileMenu.style.visibility = 'visible';
-            mobileMenu.style.transform = 'translateY(0)';
-            document.body.style.overflow = 'hidden';
-        } else {
-            mobileMenu.classList.remove('active');
-            mobileMenu.style.display = 'none';
-            mobileMenu.style.opacity = '0';
-            mobileMenu.style.visibility = 'hidden';
-            mobileMenu.style.transform = 'translateY(-100%)';
-            document.body.style.overflow = '';
-        }
-    });
+    if (!hamburgerToggle || !mobileMenu) return;
 
-    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-    mobileMenuLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            hamburgerToggle.checked = false;
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    });
-
-    const mobileRegisterBtn = mobileMenu.querySelector('.register-btn');
-    if (mobileRegisterBtn) {
-        mobileRegisterBtn.addEventListener('click', function() {
-            hamburgerToggle.checked = false;
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        });
+    // Function to close menu
+    function closeMenu() {
+        hamburgerToggle.checked = false;
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
     }
 
-    document.addEventListener('click', function(event) {
-        if (hamburgerToggle.checked && 
-            !mobileMenu.contains(event.target) && 
-            !hamburgerToggle.contains(event.target)) {
-            hamburgerToggle.checked = false;
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
+    // Function to open menu
+    function openMenu() {
+        hamburgerToggle.checked = true;
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Toggle menu on checkbox change
+    hamburgerToggle.addEventListener('change', function() {
+        if (this.checked) {
+            openMenu();
+        } else {
+            closeMenu();
         }
     });
+
+    // Close menu when clicking on links
+    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            closeMenu();
+        });
+    });
+
+    // Close menu when clicking on buttons
+    const mobileMenuButtons = mobileMenu.querySelectorAll('button');
+    mobileMenuButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Only close if it's not a logout button that needs to process
+            if (!this.classList.contains('logout-btn')) {
+                closeMenu();
+            }
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (hamburgerToggle.checked) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnHamburger = hamburgerLabel && hamburgerLabel.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnHamburger) {
+                closeMenu();
+            }
+        }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && hamburgerToggle.checked) {
+            closeMenu();
+        }
+    });
+}
+
+// ============================================
+// Calendar Page Functions
+// ============================================
+
+// متغيرات عامة للتقويم - هنا بنخزن الشهر والسنة اللي هنعرضهم حالياً
+let currentMonth = new Date().getMonth(); 
+let currentYear = new Date().getFullYear(); 
+
+
+function getAttendanceRecords() {
+    // أولاً: بنحاول نجيب البيانات من attendanceRecords مباشرة من localStorage
+    let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+    
+    // ثانياً: بنحاول نجيب البيانات من currentUser إذا كانت attendanceRecords فاضية
+    if (attendanceRecords.length === 0) {
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            const user = JSON.parse(currentUser);
+            // بنحول بيانات user.attendance لشكل موحد
+            if (user.attendance && user.attendance.length > 0) {
+                attendanceRecords = user.attendance.map(record => ({
+                    id: record.userId || record.studentId || user.studentId,
+                    userId: record.userId || user.id,
+                    studentId: record.studentId || user.studentId,
+                    topic: record.className || record.topic || '',
+                    date: formatDateForCalendar(record.checkInDate || record.checkInTime || record.date),
+                    status: record.status || 'Present'
+                }));
+            }
+        }
+    }
+    
+    return attendanceRecords;
+}
+
+
+//   دالة لتحويل التاريخ لصيغة YYYY-MM-DD
+function formatDateForCalendar(dateString) {
+    if (!dateString) return '';
+    
+    // إذا كان التاريخ بصيغة YYYY-MM-DD، نرجعه كما هو
+    if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return dateString;
+    }
+    
+    // إذا كان بصيغة أخرى، بنحوله ل Date object ثم بنحوله ل YYYY-MM-DD
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return '';
+        
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0'); 
+        
+        return `${year}-${month}-${day}`;
+    } catch (error) {
+        return '';
+    }
+}
+
+
+function getCurrentStudentId() {
+    // أولاً: بنحاول نجيب من currentStudent
+    let studentId = localStorage.getItem('currentStudent');
+    
+    // إذا ماكانش موجود، بنحاول من currentUser
+    if (!studentId) {
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            const user = JSON.parse(currentUser);
+            studentId = user.studentId || user.id || null;
+        }
+    }
+    
+    return studentId;
+}
+
+
+function getFilteredAttendanceRecords(attendanceRecords, studentId, month, year) {
+    if (!attendanceRecords || attendanceRecords.length === 0) {
+        return [];
+    }
+    
+    // بنفلتر السجلات علشان نجيب بس اللي بتخص الطالب الحالي
+    const studentRecords = attendanceRecords.filter(record => {
+        return record.id == studentId || 
+               record.studentId == studentId || 
+               record.userId == studentId ||
+               String(record.id) === String(studentId) ||
+               String(record.studentId) === String(studentId) ||
+               String(record.userId) === String(studentId);
+    });
+    
+    // بنفلتر السجلات علشان نجيب بس اللي في الشهر والسنة المحددين
+    const monthRecords = studentRecords.filter(record => {
+        if (!record.date) return false;
+        
+        // بنحول التاريخ لصيغة YYYY-MM-DD إذا كان مختلف
+        const formattedDate = formatDateForCalendar(record.date);
+        if (!formattedDate) return false;
+        
+        // بنحلل التاريخ علشان نجيب السنة والشهر
+        const dateParts = formattedDate.split('-');
+        if (dateParts.length !== 3) return false;
+        
+        const recordYear = parseInt(dateParts[0]);
+        const recordMonth = parseInt(dateParts[1]) - 1; 
+        
+        // بنرجع true إذا كانت السنة والشهر بتطابقوا
+        return recordYear === year && recordMonth === month;
+    });
+    
+    return monthRecords;
+}
+
+
+function renderCalendar() {
+    // بنجيب العنصر اللي هيعرض التقويم فيه
+    const calendarGrid = document.getElementById('calendar-grid');
+    if (!calendarGrid) return; 
+    
+
+    calendarGrid.innerHTML = '';
+    
+
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+
+    const daysInMonthCorrect = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.classList.add('day-cell', 'empty'); 
+        calendarGrid.appendChild(emptyCell);
+    }
+    
+    // بنضيف خلايا الأيام الفعلية (من 1 لآخر يوم في الشهر)
+    for (let day = 1; day <= daysInMonthCorrect; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('day-cell');
+        
+        // بنضيف رقم اليوم في الخلية
+        const dayNumber = document.createElement('div');
+        dayNumber.classList.add('day-number');
+        dayNumber.textContent = day;
+        dayCell.appendChild(dayNumber);
+        
+        const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        dayCell.setAttribute('data-date', dateString);
+        
+        calendarGrid.appendChild(dayCell);
+    }
+    
+    // بعد ما بنرسم التقويم، بنحدّث عنوان الشهر والسنة
+    updateMonthYearDisplay();
+    
+    // بعدين بنحدّث علامات الحضور على الأيام
+    markAttendanceDays();
+}
+
+
+function updateMonthYearDisplay() {
+    const monthYearElement = document.getElementById('calendar-month');
+    if (!monthYearElement) return;
+    
+
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    // بنحدّث النص بالشهر والسنة
+    monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+}
+
+
+function markAttendanceDays() {
+    // بنجيب معرف الطالب الحالي
+    const studentId = getCurrentStudentId();
+    
+    if (!studentId) {
+        return;
+    }
+    
+    // بنجيب كل سجلات الحضور
+    const allRecords = getAttendanceRecords();
+    
+
+    if (!allRecords || allRecords.length === 0) {
+        return;
+    }
+    
+    // بنفلتر السجلات علشان نجيب بس اللي للطالب الحالي في الشهر المعروض
+    const filteredRecords = getFilteredAttendanceRecords(
+        allRecords,
+        studentId,
+        currentMonth,
+        currentYear
+    );
+    
+    // لو مافيش سجلات للطالب في هذا الشهر، نوقف الدالة
+    if (!filteredRecords || filteredRecords.length === 0) {
+        return;
+    }
+    
+    // بنلف على كل سجل حضور
+    filteredRecords.forEach(record => {
+        // بنتأكد إن السجل فيه status "Present"
+        if (record.status === 'Present' || !record.status) { 
+            const dateString = formatDateForCalendar(record.date);
+            
+            if (dateString) {
+                const dayCell = document.querySelector(`.day-cell[data-date="${dateString}"]`);
+
+                if (dayCell && !dayCell.classList.contains('empty')) {
+                    // بنضيف class "present-day" للخلية علشان تظهر بلون مختلف
+                    dayCell.classList.add('present-day');
+                    
+                    // (اختياري) بنضيف معلومات إضافية في الخلية (مثل كود المادة)
+                    // هنا بنضيف نص صغير في أسفل الخلية بيوضح كود المادة أو الموضوع
+                    if (record.classCode || record.topic) {
+                        // بنتحقق إن الخلية ما عندهاوش info من قبل
+                        let dayInfo = dayCell.querySelector('.day-info');
+                        
+                        if (!dayInfo) {
+                            // بنعمل عنصر جديد لل info
+                            dayInfo = document.createElement('div');
+                            dayInfo.classList.add('day-info');
+                            dayCell.appendChild(dayInfo);
+                        }
+                        
+                        // بنضيف كود المادة أو الموضوع
+                        dayInfo.textContent = record.classCode || record.topic;
+                        
+                        // بنضيف tooltip (تلميح) علشان لو المستخدم مرر الماوس يظهر تفاصيل أكثر
+                        const existingTitle = dayCell.title || '';
+                        dayCell.title = `Present - ${record.classCode || record.topic || 'Attendance'}${existingTitle ? ' | ' + existingTitle : ''}`;
+                    }
+                }
+            }
+        }
+    });
+}
+
+function checkStudentLogin() {
+    const studentId = getCurrentStudentId();
+    const noStudentMessage = document.getElementById('no-student-message');
+    const calendarContainer = document.getElementById('calendar-container');
+    
+    if (!studentId) {
+        // إذا ماكانش في طالب مسجل دخول، نخفي التقويم ونعرض الرسالة
+        if (noStudentMessage) {
+            noStudentMessage.style.display = 'block';
+        }
+        if (calendarContainer) {
+            calendarContainer.style.display = 'none';
+        }
+        return false;
+    } else {
+        // إذا كان في طالب مسجل دخول، نخفي الرسالة ونعرض التقويم
+        if (noStudentMessage) {
+            noStudentMessage.style.display = 'none';
+        }
+        if (calendarContainer) {
+            calendarContainer.style.display = 'block';
+        }
+        return true;
+    }
+}
+
+function goToPreviousMonth() {
+    currentMonth--;
+    
+    if (currentMonth < 0) {
+        currentMonth = 11; 
+        currentYear--;
+    }
+    
+    renderCalendar();
+}
+
+
+function goToNextMonth() {
+
+    currentMonth++;
+    
+
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    
+
+    renderCalendar();
+}
+
+
+function initializeCalendar() {
+    const calendarGrid = document.getElementById('calendar-grid');
+    const calendarContainer = document.getElementById('calendar-container');
+    
+    // إذا مافيش عناصر التقويم في الصفحة، يبقى مش صفحة التقويم
+    if (!calendarGrid || !calendarContainer) {
+        return; // نوقف الدالة
+    }
+    
+    // بنتحقق من تسجيل دخول الطالب أولاً
+    const hasStudent = checkStudentLogin();
+    
+    if (hasStudent) {
+        const today = new Date();
+        currentMonth = today.getMonth();
+        currentYear = today.getFullYear();
+        
+        renderCalendar();
+        
+        const prevButton = document.getElementById('prev-month');
+        const nextButton = document.getElementById('next-month');
+        
+        if (prevButton) {
+            prevButton.onclick = goToPreviousMonth; 
+        }
+        
+        if (nextButton) {
+            nextButton.onclick = goToNextMonth; 
+        }
+    }
+}
+
+function runCalendarInitialization() {
+    setTimeout(() => {
+        initializeCalendar();
+    }, 10);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runCalendarInitialization);
+} else {
+    runCalendarInitialization();
 }
 

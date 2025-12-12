@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../CSS/style.css">
+    <title>Attendance Calendar</title>
+</head>
+
+<body style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+    <!-- الهيدر -->
+    <header>
+        <!-- الناف بار -->
+        <nav>
+            <!-- اللوجو -->
+            <div class="logo">
+                <span><i class="fa-solid fa-check"></i></span>
+                <h1>
+                    Attendly
+                </h1>
+            </div>
+            <!-- اللينكات الرئيسية -->
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="checkin.html">Check In</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="calendar.html" class="active">Calendar</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <!-- زر تسجيل الدخول -->
+            <div class="action-buttons">
+                <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+            </div>
+            <!-- المنيو -->
+            <label class="hamburger">
+                <input type="checkbox" id="hamburger-toggle">
+                <svg viewBox="0 0 32 32">
+                    <path class="line line-top-bottom"
+                        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
+                    </path>
+                    <path class="line" d="M7 16 27 16"></path>
+                </svg>
+            </label>
+        </nav>
+        <!-- القائمة المتنقلة -->
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="checkin.html">Check In</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="calendar.html" class="active">Calendar</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="mobile-action-buttons">
+                <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Calendar Section -->
+    <main class="calendar-main-container">
+        <div class="calendar-wrapper">
+            <!-- Calendar Title -->
+            <h1 class="calendar-page-title">Attendance Calendar</h1>
+
+            <!-- Student Login Message (if no student logged in) -->
+            <div id="no-student-message" class="no-student-message" style="display: none;">
+                <p>No student logged in. Please <a href="register.html">register</a> or <a href="checkin.html">check in</a> first.</p>
+            </div>
+
+            <!-- Calendar Container -->
+            <div class="calendar-container" id="calendar-container" style="display: none;">
+                <!-- Calendar Header with Month Navigation -->
+                <div class="calendar-header">
+                    <button id="prev-month" class="month-nav-btn" aria-label="Previous Month">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <h2 id="calendar-month" class="calendar-month-year">December 2025</h2>
+                    <button id="next-month" class="month-nav-btn" aria-label="Next Month">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Weekday Headers -->
+                <div class="calendar-weekdays">
+                    <div class="weekday">Sun</div>
+                    <div class="weekday">Mon</div>
+                    <div class="weekday">Tue</div>
+                    <div class="weekday">Wed</div>
+                    <div class="weekday">Thu</div>
+                    <div class="weekday">Fri</div>
+                    <div class="weekday">Sat</div>
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="calendar-grid" id="calendar-grid">
+                    <!-- Day cells will be dynamically generated here -->
+                </div>
+
+                <!-- Legend -->
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-box present-day"></div>
+                        <span class="legend-label">Present</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box"></div>
+                        <span class="legend-label">No data / Absent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../JS/main.js"></script>
+</body>
+
+</html>
+

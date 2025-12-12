@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/CSS/style.css">
+    <title>Contact Page</title>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header>
+        <!-- الناف بار -->
+        <nav>
+            <!-- اللوجو -->
+            <div class="logo">
+                <span><i class="fa-solid fa-check"></i></span>
+                <h1>
+                    Attendly
+                </h1>
+            </div>
+            <!-- اللينكات الرئيسية -->
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="checkin.html">Check In</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <!-- زر تسجيل الدخول -->
+            <div class="action-buttons">
+                <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+            </div>
+            <!-- المنيو -->
+            <label class="hamburger">
+                <input type="checkbox" id="hamburger-toggle">
+                <svg viewBox="0 0 32 32">
+                    <path class="line line-top-bottom"
+                        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
+                    </path>
+                    <path class="line" d="M7 16 27 16"></path>
+                </svg>
+            </label>
+        </nav>
+        <!-- القائمة المتنقلة -->
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="checkin.html">Check In</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="mobile-action-buttons">
+                <button onclick="window.location.href='register.html'" class="register-btn">Register</button>
+            </div>
+        </div>
+    </header>
+    <main class="main-section">
+        <!-- الهيدر الخاص بالصفحة -->
+        <div class="header">
+            <h1>Get In Touch</h1>
+            <p>We're here to help, Wheter you have a question, a proplem , or just want to say hi, we'd love to hear from you.</p>
+        </div>
+        <!-- الديف الخاص بفورم التواصل -->
+        <div class="contact-section">
+            <div class="contact-info">
+                <h1>Contact Information</h1>
+                <p>Find us here, we're ready to assist</p>
+                <ul>
+                    <li><i class="fa-solid fa-location-dot"></i> New Mansoura University , Gamsa Road</li>
+                    <li><i class="fa-solid fa-phone"></i> +010000000000</li>
+                    <li><i class="fa-solid fa-envelope"></i> support@nmu.com</li>
+                </ul>
+            </div>
+            <div class="contact-form">
+                <h1>Send Us a Message</h1>
+                <form action="">
+                    <input type="text" placeholder="Your Name">
+                    <input type="email" placeholder="Your Email">
+                    <input type="text" placeholder="Subject">
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="/JS/main.js"></script>
+</body>
+</html>
